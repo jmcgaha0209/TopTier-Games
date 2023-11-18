@@ -1,5 +1,3 @@
-var express = require("express");
-
 require('dotenv').config();
 
 const Progress = require("../models/ProgressCard");
@@ -38,33 +36,33 @@ const addUserGame = async (req, res) =>
     return res.status(200).json({ id: 1, message: "User game added successfully." });
 };
 
-const getUserGame = async (req, res) =>
+const getUserGames = async (req, res) =>
 {
     let userId = req.body.userId;
-    let pcard = await Progress.find({ UserId: userId });
-    let rcard = await Ranking.find({ UserId: userId });
+    let pcards = await Progress.find({ UserId: userId });
+    let rcards = await Ranking.find({ UserId: userId });
 
     let objects = [];
 
 
-    if (pcard === null || rcard === null) 
+    if (pcards === null || rcards === null) 
     {
         return res.status(400).json({ games: [], message: "No games found." });
     }
     else
     {
-        let len = pcard.length;
+        let len = pcards.length;
 
         for (let i = 0; i < len; i++)
         {
             let obj = {};
 
-            obj.UserId = pcard[i].UserId;
-            obj.GameId = pcard[i].GameId;
-            obj.HoursPlayed = pcard[i].HoursPlayed;
-            obj.Status = pcard[i].Status;
-            obj.Ranking = rcard[i].Ranking;
-            obj.Review = rcard[i].Review;
+            obj.UserId = pcards[i].UserId;
+            obj.GameId = pcards[i].GameId;
+            obj.HoursPlayed = pcards[i].HoursPlayed;
+            obj.Status = pcards[i].Status;
+            obj.Ranking = rcards[i].Ranking;
+            obj.Review = rcards[i].Review;
 
             objects.push(obj);
         }
@@ -106,6 +104,6 @@ const deleteUserGame = async (req, res) =>
 module.exports =
 {
     addUserGame,
-    getUserGame,
+    getUserGames,
     deleteUserGame
 };

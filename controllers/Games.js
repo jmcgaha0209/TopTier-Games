@@ -1,4 +1,3 @@
-var express = require("express");
 var functions = require('./gameFunctions');
 
 require('dotenv').config();
@@ -143,15 +142,13 @@ const populateHomePage = async (req, res) =>
 
             if (game === null)
             {
-                const at = req.headers['authorization'].split(' ')[1];
-                let js = JSON.stringify({gameId: obj.id});
+                let js = JSON.stringify({ gameId: obj.id });
                 let response = await fetch(buildPath("Games/api/insertgame"),
                     {
                         method: 'POST',
                         body: js,
                         credentials: 'include',
-                        headers: { "Content-Type": "application/json",
-                        'authorization':`Bearer ${at}` },
+                        headers: { "Content-Type": "application/json" },
                     });
 
                 let result = JSON.parse(await response.text());
@@ -160,7 +157,7 @@ const populateHomePage = async (req, res) =>
                     return result.status;
                 }
             }
-         });
+        });
 
 
         for (let i = 0; i < data.length; i++)
@@ -222,7 +219,6 @@ const getGameInfo = async (req, res) =>
     if (options.cover !== undefined && options.cover === true)
     {
         opts.CoverURL = 1;
-
     }
     if (options.summary !== undefined && options.summary === true)
     {
@@ -236,15 +232,13 @@ const getGameInfo = async (req, res) =>
     {
         opts.GameRanking = 1;
     }
-    else if (options.genre !== undefined && options.genre === true)
+    if (options.genre !== undefined && options.genre === true)
     {
         opts.Genre = 1;
-        
     }
     if (options.images !== undefined && options.images === true)
     {
         opts.Images = 1;
-        
     }
     if (options.links !== undefined && options.links === true)
     {
