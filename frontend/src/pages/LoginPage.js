@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
+  const [gaveUserName, setGaveUserName] = useState(false);
   let loginName;
   let loginPassword;
 
@@ -19,6 +20,8 @@ const LoginPage = () => {
     navigate("/auth/true");
   };
 
+  
+
   return (
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <div className="absolute inset-0 -z-20 h-full w-full object-cover bg-black opacity-60"></div>
@@ -29,8 +32,7 @@ const LoginPage = () => {
       />
       <form
         className="space-y-6"
-        action="#"
-        onSubmit={(event) => userLogin(event, loginName, loginPassword, toast)}
+        onSubmit={(event) => { event.preventDefault(); setGaveUserName(true)}}
       >
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
           Sign in to your account
@@ -46,12 +48,25 @@ const LoginPage = () => {
             <input
               id="username"
               name="username"
+              type="text"
               required
               className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
               ref={(c) => (loginName = c)}
             />
           </div>
         </div>
+        {!gaveUserName && 
+          <button type="submit"
+          className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
+          >Confirm Username</button>
+        }
+      </form>
+      {gaveUserName && 
+      <form
+      className="space-y-6"
+      action="#"
+      onSubmit={(event) => userLogin(event, loginName, loginPassword, toast)}
+      >
         <div>
           <div className="flex items-center justify-between">
             <label
@@ -62,7 +77,7 @@ const LoginPage = () => {
             </label>
             <div className="text-sm">
               <button
-                href="#"
+                type="button" // Explicitly make this a non-submit button
                 className="font-semibold text-green-400 hover:text-green-300"
                 onClick={(event) => handleForgotPassword(event)}
               >
@@ -81,7 +96,7 @@ const LoginPage = () => {
             />
           </div>
         </div>
-
+        
         <div>
           <button
             type="submit"
@@ -92,7 +107,8 @@ const LoginPage = () => {
           </button>
           <ToastContainer />
         </div>
-      </form>
+      </form> 
+      } 
     </div>
   );
 };
